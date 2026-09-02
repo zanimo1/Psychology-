@@ -260,6 +260,33 @@ section{ padding:38px 18px; position:relative; }
 
 /* ============================= PODCAST ============================= */
 .podcast{ background:linear-gradient(180deg, #0B0F0C 0%, var(--bg-2) 60%); }
+
+/* channel picker — many real podcasts, pick any one to load & play */
+.pod-channels{ display:flex; gap:10px; overflow-x:auto; padding:4px 4px 14px; scroll-snap-type:x proximity; }
+.pod-chan{
+  flex:none; scroll-snap-align:start; width:104px; display:flex; flex-direction:column; align-items:center; gap:7px;
+  cursor:pointer; text-align:center; background:none; border:none; font-family:var(--f-ar); padding:0;
+}
+.pod-chan-avatar{
+  width:54px; height:54px; border-radius:50%; flex:none; padding:2.5px;
+  background:conic-gradient(from 90deg, var(--g-400), var(--g-700), var(--g-400));
+  position:relative; transition:transform .25s var(--ease), filter .25s var(--ease);
+}
+.pod-chan-avatar .inner{
+  width:100%; height:100%; border-radius:50%; background:var(--bg-2); display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-display); font-size:1.05rem; color:var(--ink); border:2px solid var(--bg-2);
+}
+.pod-chan-name{ font-size:.66rem; font-weight:700; color:var(--ink-dim); line-height:1.3;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.pod-chan.active .pod-chan-avatar{ transform:scale(1.08); filter:drop-shadow(0 6px 14px rgba(47,163,106,.5)); }
+.pod-chan.active .pod-chan-avatar .inner{ border-color:var(--g-400); }
+.pod-chan.active .pod-chan-name{ color:var(--g-300); }
+.pod-chan-playing{ position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); display:none; align-items:flex-end; gap:2px;
+  background:var(--bg-2); border:1.5px solid var(--g-500); border-radius:100px; padding:3px 5px; height:12px; }
+.pod-chan.active .pod-chan-playing{ display:flex; }
+.pod-chan-playing i{ width:2px; border-radius:1px; background:var(--g-400); animation:wave 1.1s ease-in-out infinite; }
+.pod-chan-playing i:nth-child(1){ animation-delay:0s; } .pod-chan-playing i:nth-child(2){ animation-delay:.2s; } .pod-chan-playing i:nth-child(3){ animation-delay:.1s; }
+
 .pod-stage{ display:flex; align-items:center; gap:16px; margin-bottom:22px; }
 .vinyl{ width:132px; height:132px; border-radius:50%; flex:none; position:relative;
   background:repeating-radial-gradient(circle at center, #05070530 0 3px, #101512 3px 6px);
@@ -392,10 +419,178 @@ footer{ padding:30px 18px 40px; text-align:center; }
 footer .fline{ font-family:var(--f-mono); font-size:.62rem; color:var(--muted); }
 footer .fline b{ color:var(--g-400); }
 
+/* ============================= NEWS & ANNOUNCEMENTS ============================= */
+.news-teaser{ background:var(--bg-2); }
+.news-hero{
+  position:relative; display:block; overflow:hidden; border-radius:var(--r-lg); text-decoration:none; color:inherit;
+  min-height:190px; margin-top:16px; border:1px solid var(--line-2);
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--g-600) 0%, transparent 55%),
+    radial-gradient(140% 160% at 0% 120%, var(--g-800) 0%, transparent 60%),
+    linear-gradient(180deg, #0C0F0D 0%, #050705 100%);
+  box-shadow:0 30px 60px -24px rgba(0,0,0,.7), 0 1px 0 rgba(95,211,151,.12) inset;
+}
+.news-hero-art{ position:absolute; inset:0; display:flex; align-items:center; justify-content:flex-end; padding:10px 6px 0 0; opacity:.12; pointer-events:none; }
+.news-hero-art svg{ width:170px; height:170px; color:#fff; }
+.news-badge{ position:relative; z-index:1; display:inline-flex; align-items:center; gap:6px; margin:16px 0 0 16px;
+  font-family:var(--f-mono); font-size:.6rem; font-weight:700; letter-spacing:.04em; color:var(--g-300);
+  background:rgba(95,211,151,.12); border:1px solid var(--line-2); border-radius:100px; padding:5px 11px; }
+.news-badge.live i{ width:6px; height:6px; border-radius:50%; background:var(--g-400); box-shadow:0 0 6px var(--g-400); animation:pulse 1.3s ease-in-out infinite; }
+.news-hero-body{ position:relative; z-index:1; padding:14px 16px 20px; }
+.news-cat{ display:inline-block; font-family:var(--f-mono); font-size:.56rem; color:var(--g-300); background:rgba(95,211,151,.1);
+  border:1px solid var(--line-2); border-radius:100px; padding:3px 9px; margin-bottom:10px; }
+.news-hero-title{ font-family:var(--f-ar); font-weight:800; font-size:1.05rem; line-height:1.45; color:#fff; max-width:26ch; margin-bottom:10px; }
+.news-meta{ display:flex; align-items:center; gap:6px; font-family:var(--f-mono); font-size:.6rem; color:var(--ink-dim); }
+
+.news-row{ display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+.news-card{ display:block; background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:14px;
+  text-decoration:none; color:inherit; position:relative; overflow:hidden; }
+.news-card-ic{ width:32px; height:32px; border-radius:9px; background:rgba(95,211,151,.1); border:1px solid var(--line-2);
+  display:flex; align-items:center; justify-content:center; color:var(--g-300); margin-bottom:10px; }
+.news-card-ic svg{ width:15px; height:15px; }
+.news-card-title{ font-family:var(--f-ar); font-weight:700; font-size:.82rem; line-height:1.4; color:var(--ink); margin-bottom:8px; }
+
+/* ============================= NEWS — full overlay page ============================= */
+.news-page{ position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; display:none;
+  transform:translateX(100%); transition:transform .38s var(--ease); }
+.news-page.open{ display:block; transform:translateX(0); }
+.news-p-head{ position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:12px; padding:16px 18px;
+  background:linear-gradient(180deg, var(--bg) 60%, transparent); backdrop-filter:blur(6px); }
+.news-p-back{ width:36px; height:36px; border-radius:50%; background:var(--card); border:1px solid var(--line-2);
+  display:flex; align-items:center; justify-content:center; color:var(--ink); flex:none; cursor:pointer; }
+.news-p-back svg{ width:15px; height:15px; }
+.news-p-head h2{ font-family:var(--f-display); font-weight:400; font-size:1.5rem; color:var(--ink); margin:0; }
+.news-p-hero{ padding:6px 20px 22px; }
+.news-p-hero p{ font-family:var(--f-hand); font-size:1rem; color:var(--ink-dim); max-width:30ch; line-height:1.5; margin:0; }
+.news-p-tabs{ display:flex; gap:8px; padding:0 18px 18px; overflow-x:auto; }
+.news-p-tab{ flex:none; font-family:var(--f-mono); font-size:.64rem; color:var(--muted); padding:7px 14px; border:1px solid var(--line); border-radius:100px; background:var(--card); cursor:pointer; }
+.news-p-tab.active{ color:#03150C; background:var(--g-500); border-color:var(--g-500); font-weight:700; }
+.news-p-list{ padding:0 18px 50px; display:flex; flex-direction:column; gap:16px; }
+.news-p-card{ display:flex; flex-direction:column; background:linear-gradient(155deg, var(--card-2), var(--card)); border:1px solid var(--line);
+  border-radius:var(--r-md); padding:16px; position:relative; overflow:hidden; }
+.news-p-card::before{ content:""; position:absolute; inset:0; background:radial-gradient(120% 100% at 100% 0%, rgba(95,211,151,.08), transparent 60%); pointer-events:none; }
+.news-p-top-row{ position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.news-p-title{ position:relative; z-index:1; font-family:var(--f-ar); font-weight:800; font-size:.96rem; color:var(--ink); line-height:1.4; margin-bottom:8px; }
+.news-p-desc{ position:relative; z-index:1; font-size:.74rem; color:var(--ink-dim); line-height:1.55; margin-bottom:12px; }
+.news-p-foot{ position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; }
+.news-p-more{ display:flex; align-items:center; gap:5px; font-family:var(--f-ar); font-weight:700; font-size:.66rem; color:var(--g-300); }
+.news-p-more svg{ width:11px; height:11px; }
+
+/* ============================= AI ASSISTANT — teaser card ============================= */
+.ai-teaser{ background:var(--bg); }
+.ai-card{
+  position:relative; overflow:hidden; border-radius:var(--r-lg); cursor:pointer;
+  padding:22px 18px 18px; border:1px solid var(--line-2);
+  background:
+    radial-gradient(120% 130% at 85% -10%, var(--g-600) 0%, transparent 55%),
+    radial-gradient(130% 150% at 5% 115%, var(--g-800) 0%, transparent 60%),
+    linear-gradient(180deg, #0C0F0D 0%, #050705 100%);
+  box-shadow:0 30px 60px -24px rgba(0,0,0,.7), 0 1px 0 rgba(95,211,151,.12) inset;
+}
+.ai-card::before{
+  content:""; position:absolute; inset:0;
+  background-image:repeating-linear-gradient(60deg, rgba(95,211,151,.05) 0 1px, transparent 1px 30px),
+                    repeating-linear-gradient(-60deg, rgba(95,211,151,.05) 0 1px, transparent 1px 30px);
+  opacity:.5; pointer-events:none;
+}
+.ai-glow{ position:absolute; width:160px; height:160px; border-radius:50%; top:-60px; left:-40px;
+  background:radial-gradient(circle, rgba(95,211,151,.35), transparent 70%); filter:blur(10px); pointer-events:none; }
+.ai-card-top{ position:relative; z-index:1; display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.ai-avatar{ width:34px; height:34px; border-radius:10px; flex:none; background:linear-gradient(155deg, var(--g-500), var(--g-800));
+  display:flex; align-items:center; justify-content:center; box-shadow:0 8px 16px -6px rgba(47,163,106,.6); }
+.ai-avatar svg{ width:15px; height:15px; color:var(--bg); }
+.ai-name{ font-family:var(--f-en); font-weight:700; font-size:.84rem; color:var(--ink); letter-spacing:-.01em; }
+.ai-status{ display:flex; align-items:center; gap:5px; font-family:var(--f-mono); font-size:.58rem; color:var(--g-300); margin-top:2px; }
+.ai-status i{ width:6px; height:6px; border-radius:50%; background:var(--g-400); box-shadow:0 0 6px var(--g-400); animation:pulse 1.6s ease-in-out infinite; }
+.ai-prompt{ position:relative; z-index:1; font-family:var(--f-hand); font-size:1.3rem; color:var(--ink-dim); margin-bottom:14px; }
+.ai-chips{ position:relative; z-index:1; display:flex; gap:7px; flex-wrap:wrap; margin-bottom:18px; }
+.ai-chip{ background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--ink-dim); border-radius:100px;
+  padding:7px 13px; font-family:var(--f-ar); font-size:.68rem; font-weight:500; }
+.ai-inputbar{ position:relative; z-index:1; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.05);
+  border:1px solid var(--line-2); border-radius:100px; padding:6px 6px 6px 16px; }
+.ai-input-fake{ flex:1; font-family:var(--f-ar); font-size:.78rem; color:var(--muted); }
+.ai-mic{ flex:none; width:34px; height:34px; border-radius:50%; background:rgba(95,211,151,.14); display:flex; align-items:center; justify-content:center; }
+.ai-mic svg{ width:14px; height:14px; color:var(--g-300); }
+
+/* ============================= AI ASSISTANT — fullscreen page ============================= */
+/* same visual recipe as .ai-card (radial greens + diagonal weave) so opening the page
+   feels like the exact same surface simply growing, never a swap to a different design */
+.ai-page{
+  display:none; position:fixed; z-index:70; flex-direction:column; overflow:hidden;
+  background:
+    radial-gradient(120% 60% at 88% -8%, var(--g-600) 0%, transparent 55%),
+    radial-gradient(130% 70% at 2% 108%, var(--g-800) 0%, transparent 60%),
+    linear-gradient(180deg, #0C0F0D 0%, #050705 100%);
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.85), 0 1px 0 rgba(95,211,151,.12) inset;
+}
+.ai-page::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background-image:repeating-linear-gradient(60deg, rgba(95,211,151,.05) 0 1px, transparent 1px 30px),
+                    repeating-linear-gradient(-60deg, rgba(95,211,151,.05) 0 1px, transparent 1px 30px);
+}
+.ai-page::after{ content:""; position:absolute; z-index:0; width:220px; height:220px; border-radius:50%; top:-80px; left:-60px;
+  background:radial-gradient(circle, rgba(95,211,151,.3), transparent 70%); filter:blur(14px); pointer-events:none; }
+.ai-page > *{ position:relative; z-index:1; }
+
+/* staggered entrance for the header / chat / composer once the box has finished growing */
+.ai-page-in .ai-page-head{ animation:aiContentIn .5s var(--ease) both; }
+.ai-page-in .ai-chat{ animation:aiContentIn .5s var(--ease) .07s both; }
+.ai-page-in .ai-composer{ animation:aiContentIn .5s var(--ease) .14s both; }
+@keyframes aiContentIn{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+
+/* click-origin shockwave + flying stars fired the instant the card is tapped */
+.ai-burst{ position:fixed; z-index:69; width:26px; height:26px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(95,211,151,.65), rgba(95,211,151,0) 72%);
+  transform:translate(-50%,-50%) scale(0); animation:aiBurstExpand .68s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes aiBurstExpand{ 0%{ transform:translate(-50%,-50%) scale(0); opacity:.95; } 100%{ transform:translate(-50%,-50%) scale(34); opacity:0; } }
+.ai-burst-star{ position:fixed; z-index:69; width:11px; height:11px; color:var(--g-300); pointer-events:none;
+  animation:aiStarFly .6s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes aiStarFly{
+  0%{ transform:translate(-50%,-50%) scale(.3) rotate(0deg); opacity:1; }
+  100%{ transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.15) rotate(200deg); opacity:0; }
+}
+.ai-page-head{ flex:none; display:flex; align-items:center; gap:12px; padding:18px 16px 14px;
+  border-bottom:1px solid var(--line); background:rgba(7,8,10,.32); backdrop-filter:blur(10px); }
+.ai-back{ width:34px; height:34px; border-radius:50%; background:var(--card); border:1px solid var(--line-2);
+  display:flex; align-items:center; justify-content:center; color:var(--ink); flex:none; cursor:pointer; }
+.ai-back svg{ width:14px; height:14px; }
+.ai-page-title{ flex:1; min-width:0; }
+.ai-page-title b{ display:block; font-family:var(--f-en); font-weight:700; font-size:.86rem; color:var(--ink); }
+.ai-page-title span{ display:block; font-family:var(--f-mono); font-size:.58rem; color:var(--g-300); margin-top:2px; }
+
+.ai-chat{ flex:1; overflow-y:auto; padding:18px 14px; display:flex; flex-direction:column; gap:12px; }
+.ai-msg{ display:flex; flex-direction:column; max-width:82%; }
+.ai-msg.bot{ align-self:flex-start; align-items:flex-start; }
+.ai-msg.user{ align-self:flex-end; align-items:flex-end; }
+.ai-bubble{ font-family:var(--f-ar); font-size:.8rem; line-height:1.6; padding:11px 14px; border-radius:16px; white-space:pre-wrap; }
+.ai-msg.bot .ai-bubble{ background:var(--card); border:1px solid var(--line); color:var(--ink); border-top-left-radius:4px; }
+.ai-msg.user .ai-bubble{ background:var(--g-600); color:#EAFBF1; border-top-right-radius:4px; }
+.ai-bubble.loading{ display:flex; align-items:center; gap:5px; padding:14px; }
+.ai-dot{ width:6px; height:6px; border-radius:50%; background:var(--g-400); display:inline-block; animation:aiTyping 1s ease-in-out infinite; }
+.ai-dot:nth-child(2){ animation-delay:.15s; } .ai-dot:nth-child(3){ animation-delay:.3s; }
+@keyframes aiTyping{ 0%,100%{ transform:translateY(0); opacity:.4; } 50%{ transform:translateY(-4px); opacity:1; } }
+.ai-msg-img{ width:150px; border-radius:12px; margin-bottom:6px; display:block; border:1px solid var(--line-2); }
+
+.ai-composer{ flex:none; padding:10px 12px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:rgba(14,17,15,.5); backdrop-filter:blur(10px); }
+.ai-img-preview{ position:relative; display:inline-flex; margin-bottom:8px; }
+.ai-img-preview img{ width:56px; height:56px; object-fit:cover; border-radius:10px; border:1px solid var(--line-2); }
+.ai-img-remove{ position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:50%; background:var(--card);
+  border:1px solid var(--line-2); color:var(--ink-dim); display:flex; align-items:center; justify-content:center; font-size:.7rem; cursor:pointer; line-height:1; }
+.ai-composer-row{ display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--line-2); border-radius:100px; padding:6px 6px 6px 14px; }
+.ai-attach-btn{ flex:none; width:32px; height:32px; border-radius:50%; background:rgba(95,211,151,.1); display:flex; align-items:center; justify-content:center; color:var(--g-300); cursor:pointer; }
+.ai-attach-btn svg{ width:14px; height:14px; }
+.ai-text-input{ flex:1; min-width:0; border:none; outline:none; background:transparent; font-family:var(--f-ar); font-size:.78rem; color:var(--ink); }
+.ai-text-input::placeholder{ color:var(--muted); }
+.ai-send-btn{ flex:none; width:34px; height:34px; border-radius:50%; background:var(--g-500); border:none; color:#03150C;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.ai-send-btn svg{ width:14px; height:14px; }
+
 @media (max-width:360px){ .word{ font-size:2.05rem; } .sec-title{ font-size:2.1rem; } }
 </style>
 </head>
 <body>
+
+
 
 <svg width="0" height="0" style="position:absolute">
   <symbol id="zstar" viewBox="0 0 100 100">
@@ -543,10 +738,12 @@ footer .fline b{ color:var(--g-400); }
   <section class="podcast">
     <div class="eyebrow"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13.5v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.3"/><rect x="17" y="13" width="4" height="6" rx="1.3"/></svg>استمع</div>
     <h2 class="sec-title">بودكاست.</h2>
-    <p class="sec-sub">حوارات صوتية أسبوعية حول النفس والحياة اليومية.</p>
+    <p class="sec-sub">حوارات صوتية أسبوعية حول النفس والحياة اليومية — اختر أي قناة واستمع لها مباشرة.</p>
+
+    <div class="pod-channels" id="podChannels"></div>
 
     <div class="pod-stage">
-      <div class="vinyl" id="vinylEl"><div class="label"><span>Ilyass<br>Psycho</span></div><div class="hole"></div></div>
+      <div class="vinyl" id="vinylEl"><div class="label"><span id="vinylLabel">Ilyass<br>Psycho</span></div><div class="hole"></div></div>
       <div class="pod-info">
         <div class="onair" id="onairChip"><i></i><b id="onairTxt">جاهز للتشغيل</b></div>
         <div class="waveform" id="waveEl">
@@ -561,7 +758,7 @@ footer .fline b{ color:var(--g-400); }
         </div>
       </div>
     </div>
-    <p class="pod-src">🎧 صوت حقيقي مباشر من قناة <a href="https://youtube.com/@ilyasspsycho" target="_blank" rel="noopener">Ilyass Psycho</a> على يوتيوب — تشغيل صوتي فقط داخل التطبيق.</p>
+    <p class="pod-src">🎧 صوت حقيقي مباشر من قناة <a id="podSrcLink" href="https://youtube.com/@ilyasspsycho" target="_blank" rel="noopener">Ilyass Psycho</a> على يوتيوب — تشغيل صوتي فقط داخل التطبيق.</p>
 
     <div id="ytAudioBox" style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;">
       <div id="ytAudioPlayer"></div>
@@ -570,10 +767,55 @@ footer .fline b{ color:var(--g-400); }
 
   <script>
     (function(){
-      var ytPlayer, ytReady=false;
+      // كل قناة تشغّل قائمة تشغيل حقيقية من يوتيوب — بإمكانك إضافة قنوات أخرى بنفس الشكل
+      var PODCASTS = [
+        { name:'Ilyass Psycho', short:'Ilyass\nPsycho', host:'إلياس سايكو', list:'UUTYhHw-DiqEeadOZBozsXDg', url:'https://youtube.com/@ilyasspsycho' },
+        { name:'فنجان', short:'فنجان', host:'عبدالرحمن أبومالح', list:'PLeNNUmE-BlnEls2kOkiV2CXMezV6oaq8I', url:'https://www.youtube.com/playlist?list=PLeNNUmE-BlnEls2kOkiV2CXMezV6oaq8I' },
+        { name:'وجدان', short:'وجدان', host:'أسامة بن نجيفان · صحة نفسية', list:'PLdDw-NyVFhQObGdJPr4Cgntdf3erWxUtx', url:'https://www.youtube.com/playlist?list=PLdDw-NyVFhQObGdJPr4Cgntdf3erWxUtx' },
+        { name:'مربع', short:'مربع', host:'حاتم النجار', list:'PLCLCVlgpzWJM3oGuZrWxcErxOFov7Nv58', url:'https://www.youtube.com/playlist?list=PLCLCVlgpzWJM3oGuZrWxcErxOFov7Nv58' },
+        { name:'خير جليس', short:'خير\nجليس', host:'ملخصات كتب علم النفس', list:'PLfE-Zm8inImU-UwGzFTl30-3XVm_XFiEp', url:'https://www.youtube.com/playlist?list=PLfE-Zm8inImU-UwGzFTl30-3XVm_XFiEp' }
+      ];
+
+      var ytPlayer, ytReady=false, activeIdx=0, pendingLoad=false;
       var playBtn=document.getElementById('podPlay'), playIcon=document.getElementById('podPlayIcon');
       var onairTxt=document.getElementById('onairTxt'), onairChip=document.getElementById('onairChip'), vinylEl=document.getElementById('vinylEl'), waveEl=document.getElementById('waveEl');
+      var vinylLabel=document.getElementById('vinylLabel'), podSrcLink=document.getElementById('podSrcLink'), channelsBox=document.getElementById('podChannels');
       waveEl.style.opacity='.25'; vinylEl.style.animationPlayState='paused'; onairChip.style.opacity='.6';
+
+      // build the channel picker
+      PODCASTS.forEach(function(p, i){
+        var btn = document.createElement('button');
+        btn.className = 'pod-chan' + (i===0 ? ' active' : '');
+        btn.type = 'button';
+        btn.innerHTML =
+          '<div class="pod-chan-avatar"><div class="inner">' + p.name.charAt(0) + '</div>' +
+            '<span class="pod-chan-playing"><i style="height:40%"></i><i style="height:100%"></i><i style="height:65%"></i></span>' +
+          '</div>' +
+          '<div class="pod-chan-name">' + p.name + '</div>';
+        btn.addEventListener('click', function(){ selectChannel(i); });
+        channelsBox.appendChild(btn);
+      });
+
+      function setActiveChip(i){
+        var chips = channelsBox.querySelectorAll('.pod-chan');
+        chips.forEach(function(c, idx){ c.classList.toggle('active', idx===i); });
+      }
+
+      function selectChannel(i){
+        if(i === activeIdx) return;
+        activeIdx = i;
+        var p = PODCASTS[i];
+        setActiveChip(i);
+        vinylLabel.innerHTML = p.short.replace('\n', '<br>');
+        podSrcLink.textContent = p.name + ' — ' + p.host;
+        podSrcLink.href = p.url;
+        onairTxt.textContent = 'جاري التحميل…';
+        if(ytReady){
+          ytPlayer.loadPlaylist({ list:p.list, listType:'playlist', index:0 });
+        } else {
+          pendingLoad = true;
+        }
+      }
 
       var tag=document.createElement('script'); tag.src="https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
@@ -581,15 +823,18 @@ footer .fline b{ color:var(--g-400); }
       window.onYouTubeIframeAPIReady=function(){
         ytPlayer=new YT.Player('ytAudioPlayer',{
           height:'1', width:'1',
-          playerVars:{ listType:'playlist', list:'UUTYhHw-DiqEeadOZBozsXDg', autoplay:0, controls:0 },
+          playerVars:{ listType:'playlist', list:PODCASTS[0].list, autoplay:0, controls:0 },
           events:{
-            onReady:function(){ ytReady=true; },
+            onReady:function(){
+              ytReady=true;
+              if(pendingLoad){ ytPlayer.loadPlaylist({ list:PODCASTS[activeIdx].list, listType:'playlist', index:0 }); pendingLoad=false; }
+            },
             onStateChange:function(e){
               var playing = e.data===1;
               playIcon.innerHTML = playing ? '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' : '<path d="M6 4l14 8-14 8V4z"/>';
               waveEl.style.opacity = playing ? '1' : '.25';
               vinylEl.style.animationPlayState = playing ? 'running' : 'paused';
-              onairTxt.textContent = playing ? 'ON AIR' : 'متوقف';
+              if(playing || e.data===2){ onairTxt.textContent = playing ? 'ON AIR' : 'متوقف'; }
               onairChip.style.opacity = playing ? '1' : '.6';
             }
           }
@@ -717,6 +962,84 @@ footer .fline b{ color:var(--g-400); }
 
   <div class="divider"></div>
 
+  <!-- ============ NEWS & ANNOUNCEMENTS ============ -->
+  <section class="news-teaser" id="news-section">
+    <div class="sec-head-row">
+      <div>
+        <div class="eyebrow"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.6" fill="currentColor" stroke="none"/></svg>آخر المستجدات</div>
+        <h2 class="sec-title" style="margin-bottom:0;">أخبار.</h2>
+      </div>
+      <button class="see-all-btn" onclick="document.getElementById('newsPage').classList.add('open'); document.body.style.overflow='hidden';">شاهد الكل<svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg); transform-origin:center;"/></svg></button>
+    </div>
+    <p class="sec-sub">آخر الأخبار والإعلانات في عالم علم النفس والفلسفة.</p>
+
+    <a class="news-hero" href="javascript:void(0)" onclick="document.getElementById('newsPage').classList.add('open'); document.body.style.overflow='hidden';">
+      <div class="news-hero-art">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 4h16v13H8l-4 4V4z"/><path d="M8 9h8M8 12.5h5"/></svg>
+      </div>
+      <span class="news-badge live"><i></i>عاجل</span>
+      <div class="news-hero-body">
+        <span class="news-cat">مؤتمر</span>
+        <div class="news-hero-title">إطلاق أكبر مؤتمر عربي لعلم النفس الإيجابي بالرباط، نونبر 2026</div>
+        <div class="news-meta"><span class="ltr">28 غشت 2026</span><span>·</span><span>3 دقائق قراءة</span></div>
+      </div>
+    </a>
+
+    <div class="news-row">
+      <a class="news-card" href="javascript:void(0)" onclick="document.getElementById('newsPage').classList.add('open'); document.body.style.overflow='hidden';">
+        <div class="news-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5V6.5"/></svg></div>
+        <span class="news-cat">إصدار جديد</span>
+        <div class="news-card-title">صدور الترجمة العربية الكاملة لكتاب "ما وراء مبدأ اللذة" لفرويد</div>
+        <div class="news-meta"><span class="ltr">25 غشت 2026</span></div>
+      </a>
+      <a class="news-card" href="javascript:void(0)" onclick="document.getElementById('newsPage').classList.add('open'); document.body.style.overflow='hidden';">
+        <div class="news-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2a5 5 0 0 1 5 5c0 3-2 4-2 6v1H9v-1c0-2-2-3-2-6a5 5 0 0 1 5-5z"/><path d="M9.5 20h5M10 22h4"/></svg></div>
+        <span class="news-cat">دراسة</span>
+        <div class="news-card-title">دراسة جديدة تربط التأمل اليومي بانخفاض أعراض القلق بنسبة 30٪</div>
+        <div class="news-meta"><span class="ltr">21 غشت 2026</span></div>
+      </a>
+      <a class="news-card" href="javascript:void(0)" onclick="document.getElementById('newsPage').classList.add('open'); document.body.style.overflow='hidden';">
+        <div class="news-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M23 7l-7 5 7 5V7z"/><path d="M14 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/></svg></div>
+        <span class="news-cat">دورة مجانية</span>
+        <div class="news-card-title">فتح التسجيل في دورة "مدخل إلى فلسفة الوجود" أونلاين ومجاناً</div>
+        <div class="news-meta"><span class="ltr">18 غشت 2026</span></div>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ AI ASSISTANT — teaser (opens fullscreen page) ============ -->
+  <section class="ai-teaser">
+    <div class="eyebrow"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>مساعد ذكي</div>
+    <h2 class="sec-title" style="margin-bottom:6px;">اسألني.</h2>
+    <p class="sec-sub" style="margin-bottom:18px;">مساعدك الذكي لفهم أي نص أو صورة تخص علم النفس، بلمسة مغربية.</p>
+
+    <div class="ai-card" id="aiTeaserCard" onclick="openAIPage()">
+      <div class="ai-glow"></div>
+      <div class="ai-card-top">
+        <span class="ai-avatar"><svg class="star-ic"><use href="#zstar"/></svg></span>
+        <div>
+          <div class="ai-name">Nafsak AI</div>
+          <div class="ai-status"><i></i>متصل الآن</div>
+        </div>
+      </div>
+      <div class="ai-prompt">كيف يمكنني مساعدتك؟</div>
+      <div class="ai-chips">
+        <span class="ai-chip" onclick="event.stopPropagation(); openAIPage('لخّص لي هذا النص:');">لخّص نصاً</span>
+        <span class="ai-chip" onclick="event.stopPropagation(); openAIPage('أعد صياغة هذا النص:');">أعد الصياغة</span>
+        <span class="ai-chip" onclick="event.stopPropagation(); openAIPage('ترجم لي هذا:');">ترجم</span>
+        <span class="ai-chip" onclick="event.stopPropagation(); openAIPage('اشرح لي هذا المفهوم:');">اشرح</span>
+      </div>
+      <div class="ai-inputbar">
+        <span class="ai-input-fake">اسأل شيئاً...</span>
+        <span class="ai-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- ============ CHANNELS ============ -->
   <section class="channels">
     <div class="eyebrow"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6 6 0 0 1 12 0c0 5 2 5.8 2 5.8H4s2-.8 2-5.8z"/><path d="M10 19.5a2 2 0 0 0 4 0"/></svg>تابع</div>
@@ -815,6 +1138,82 @@ footer .fline b{ color:var(--g-400); }
   </div>
 </div>
 
+<!-- ============ NEWS & ANNOUNCEMENTS — full overlay page ============ -->
+<div class="news-page" id="newsPage">
+  <div class="news-p-head">
+    <span class="news-p-back" onclick="document.getElementById('newsPage').classList.remove('open'); document.body.style.overflow='';"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l-6 6 6 6M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <h2>الأخبار.</h2>
+  </div>
+  <div class="news-p-hero">
+    <p>كل جديد ومُعلَن عنه في عالم علم النفس والفلسفة — مؤتمرات، إصدارات، دراسات ودورات.</p>
+  </div>
+  <div class="news-p-tabs" id="newsTabs">
+    <span class="news-p-tab active" onclick="setNewsTab(this)">الكل</span>
+    <span class="news-p-tab" onclick="setNewsTab(this)">مؤتمرات</span>
+    <span class="news-p-tab" onclick="setNewsTab(this)">إصدارات</span>
+    <span class="news-p-tab" onclick="setNewsTab(this)">دراسات</span>
+    <span class="news-p-tab" onclick="setNewsTab(this)">دورات</span>
+  </div>
+  <div class="news-p-list">
+    <div class="news-p-card" data-cat="مؤتمرات">
+      <div class="news-p-top-row"><span class="news-cat">مؤتمر</span><span class="news-meta ltr">28 غشت 2026</span></div>
+      <div class="news-p-title">إطلاق أكبر مؤتمر عربي لعلم النفس الإيجابي بالرباط، نونبر 2026</div>
+      <p class="news-p-desc">تستضيف الرباط في نونبر المقبل نخبة من الباحثين العرب والدوليين لمناقشة أحدث تطورات علم النفس الإيجابي وتطبيقاته العملية في التعليم والعلاج، وسط اهتمام واسع من الجامعات المغربية.</p>
+      <div class="news-p-foot"><span class="news-p-more" onclick="newsSearch('مؤتمر علم النفس الإيجابي الرباط 2026')">التفاصيل الكاملة<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    </div>
+    <div class="news-p-card" data-cat="إصدارات">
+      <div class="news-p-top-row"><span class="news-cat">إصدار جديد</span><span class="news-meta ltr">25 غشت 2026</span></div>
+      <div class="news-p-title">صدور الترجمة العربية الكاملة لكتاب "ما وراء مبدأ اللذة" لفرويد</div>
+      <p class="news-p-desc">صدرت مؤخراً ترجمة عربية جديدة ودقيقة لأحد أهم نصوص فرويد المتأخرة، والتي يناقش فيها مفهوم "غريزة الموت" وتوسيع نظريته في اللاوعي.</p>
+      <div class="news-p-foot"><span class="news-p-more" onclick="newsSearch('ما وراء مبدأ اللذة فرويد ترجمة عربية')">التفاصيل الكاملة<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    </div>
+    <div class="news-p-card" data-cat="دراسات">
+      <div class="news-p-top-row"><span class="news-cat">دراسة</span><span class="news-meta ltr">21 غشت 2026</span></div>
+      <div class="news-p-title">دراسة جديدة تربط التأمل اليومي بانخفاض أعراض القلق بنسبة 30٪</div>
+      <p class="news-p-desc">أظهرت دراسة حديثة أن ممارسة التأمل الذهني (Mindfulness) لعشر دقائق يومياً على مدى ثمانية أسابيع ارتبطت بانخفاض ملحوظ في أعراض القلق العام لدى المشاركين، مقارنة بالمجموعة الضابطة.</p>
+      <div class="news-p-foot"><span class="news-p-more" onclick="newsSearch('دراسة التأمل اليومي وانخفاض القلق 2026')">التفاصيل الكاملة<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    </div>
+    <div class="news-p-card" data-cat="دورات">
+      <div class="news-p-top-row"><span class="news-cat">دورة مجانية</span><span class="news-meta ltr">18 غشت 2026</span></div>
+      <div class="news-p-title">فتح التسجيل في دورة "مدخل إلى فلسفة الوجود" أونلاين ومجاناً</div>
+      <p class="news-p-desc">دورة تمهيدية مجانية تغطي أهم أفكار الفلاسفة الوجوديين (كيركغارد، سارتر، كامو) عبر محاضرات مسجّلة وأسئلة تفاعلية، مفتوحة الآن للتسجيل لعدد محدود من المشاركين.</p>
+      <div class="news-p-foot"><span class="news-p-more" onclick="newsSearch('دورة فلسفة الوجود مجانية أونلاين')">التفاصيل الكاملة<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    </div>
+    <div class="news-p-card" data-cat="مؤتمرات">
+      <div class="news-p-top-row"><span class="news-cat">ندوة</span><span class="news-meta ltr">14 غشت 2026</span></div>
+      <div class="news-p-title">ندوة أونلاين حول "الصحة النفسية لطلبة الجامعات" بمشاركة مختصين مغاربة</div>
+      <p class="news-p-desc">ندوة رقمية مجانية تناقش تحديات الصحة النفسية التي يواجهها طلبة الجامعات، وسبل الدعم المتاحة داخل المؤسسات التعليمية المغربية.</p>
+      <div class="news-p-foot"><span class="news-p-more" onclick="newsSearch('ندوة الصحة النفسية لطلبة الجامعات المغرب')">التفاصيل الكاملة<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ AI ASSISTANT — fullscreen page ============ -->
+<div class="ai-page" id="aiPage">
+  <div class="ai-page-head">
+    <span class="ai-back" onclick="closeAIPage()"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l-6 6 6 6M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="ai-page-title"><b>Nafsak AI</b><span class="ltr">Vision · qwen3.6-27b</span></div>
+    <span class="ai-avatar" style="width:30px;height:30px;"><svg class="star-ic" style="width:12px;height:12px;"><use href="#zstar"/></svg></span>
+  </div>
+
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-msg bot"><div class="ai-bubble">مرحباً 👋 أنا مساعدك الذكي. دِير سؤالك، أو صيفط صورة (نص، تمرين، سؤال...) وغادي نقرا اللي فيها ونجاوبك عليها.</div></div>
+  </div>
+
+  <div class="ai-composer">
+    <div class="ai-img-preview" id="aiImgPreview" style="display:none;">
+      <img id="aiImgPreviewImg" src="" alt="صورة مرفقة">
+      <span class="ai-img-remove" onclick="removeAIImage()">✕</span>
+    </div>
+    <div class="ai-composer-row">
+      <label class="ai-attach-btn" for="aiFileInput"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M17 3l4 4M21 3l-8.5 8.5M13 5l-8 8v4h4l8-8"/></svg></label>
+      <input type="file" id="aiFileInput" accept="image/*" style="display:none;" onchange="handleAIImage(event)">
+      <input type="text" id="aiTextInput" class="ai-text-input" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+      <button class="ai-send-btn" onclick="sendAIMessage()" aria-label="إرسال"><svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</div>
+
 <div class="drive-modal" id="driveModal">
   <div class="drive-modal-box">
     <div class="drive-modal-head">
@@ -852,12 +1251,270 @@ footer .fline b{ color:var(--g-400); }
     el.classList.add('active');
   }
 
+  function newsSearch(title){
+    var q = encodeURIComponent(title);
+    window.open('https://www.google.com/search?q=' + q, '_blank', 'noopener');
+  }
+
+  function setNewsTab(el){
+    document.querySelectorAll('#newsTabs .news-p-tab').forEach(function(t){ t.classList.remove('active'); });
+    el.classList.add('active');
+    var cat = el.textContent.trim();
+    document.querySelectorAll('.news-p-card').forEach(function(card){
+      var show = (cat === 'الكل') || (card.getAttribute('data-cat') === cat);
+      card.style.display = show ? '' : 'none';
+    });
+  }
+
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape'){
       document.getElementById('allBooksPage').classList.remove('open');
+      document.getElementById('newsPage').classList.remove('open');
       document.body.style.overflow = '';
+      closeAIPage();
     }
   });
+
+  /* ============================= AI ASSISTANT ============================= */
+  /* ملاحظة أمان: هذه صفحة ثابتة (client-side) بدون سيرفر خلفي، فأي مفتاح
+     موجود هنا قابل للقراءة من أي حد يفتح "عرض المصدر" أو أدوات المطوّر في
+     المتصفح. للحماية الحقيقية، مرّر الطلبات عبر سيرفر بسيط (proxy) يحتفظ
+     بالمفتاح ولا يبعثه أبداً للمتصفح. */
+  var GROQ_API_KEY = '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';
+  var AI_MODEL = 'qwen/qwen3.6-27b';
+  var AI_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
+  var AI_SYSTEM_PROMPT = 'أنت "Nafsak AI"، أستاذ خاص خبير في علم النفس والفلسفة فقط (يشمل ذلك: التحليل النفسي، العلاج، السلوك، الفلسفة، المنطق، الأخلاق، تاريخ الفكر، وقراءة أي نص أو صورة تتعلق بهذه المجالات). '
+    + 'قواعدك الصارمة: '
+    + '1) إذا كان سؤال المستخدم خارج علم النفس أو الفلسفة تماماً، اعتذر في جملة واحدة فقط واطلب منه سؤالاً في هذا المجال، ولا تجب عن الموضوع الخارجي إطلاقاً. '
+    + '2) أجوبتك مختصرة جداً ومباشرة، بدون مقدمات أو حشو أو عبارات ترحيبية طويلة، مثل أستاذ خبير يعطي إجابة دقيقة وذكية مباشرة. '
+    + '3) لا تستعمل قوائم أو عناوين إلا إذا كان السؤال يتطلب ذلك فعلاً. '
+    + '4) لا تكتب أبداً أي تفكير داخلي أو خطوات تحليل أو وسوم من نوع <think>؛ اكتب الجواب النهائي فقط مباشرة. '
+    + '5) عند تحليل صورة، اذكر فقط ما هو مفيد ومرتبط بسؤال المستخدم، بإيجاز.';
+
+  var aiPendingImage = null;   // data URL of the attached image, if any
+  var aiHistory = [];          // running conversation history sent to the API
+  var aiIsOpen = false;
+
+  function spawnAIBurst(cx, cy){
+    // shockwave ring
+    var burst = document.createElement('div');
+    burst.className = 'ai-burst';
+    burst.style.top = cy + 'px';
+    burst.style.left = cx + 'px';
+    document.body.appendChild(burst);
+    setTimeout(function(){ burst.remove(); }, 700);
+
+    // a handful of stars flying outward from the tap point — same star used across the brand
+    var STAR_COUNT = 8;
+    for(var i = 0; i < STAR_COUNT; i++){
+      var ang = (Math.PI * 2 * i / STAR_COUNT) + (Math.random() * .5);
+      var dist = 70 + Math.random() * 90;
+      var star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      star.setAttribute('class', 'ai-burst-star');
+      star.setAttribute('viewBox', '0 0 100 100');
+      star.style.top = cy + 'px';
+      star.style.left = cx + 'px';
+      star.style.setProperty('--tx', Math.cos(ang) * dist + 'px');
+      star.style.setProperty('--ty', Math.sin(ang) * dist + 'px');
+      star.style.animationDelay = (Math.random() * .08) + 's';
+      var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      use.setAttribute('href', '#zstar');
+      star.appendChild(use);
+      document.body.appendChild(star);
+      (function(el){ setTimeout(function(){ el.remove(); }, 720); })(star);
+    }
+  }
+
+  function openAIPage(prefill){
+    var card  = document.getElementById('aiTeaserCard');
+    var page  = document.getElementById('aiPage');
+    if(!card || !page) return;
+    if(aiIsOpen){ if(prefill){ document.getElementById('aiTextInput').value = prefill; } return; }
+
+    var r = card.getBoundingClientRect();
+    var radius = getComputedStyle(card).borderRadius;
+
+    spawnAIBurst(r.left + r.width / 2, r.top + r.height / 2);
+
+    page.classList.remove('ai-page-in');
+    page.style.transition = 'none';
+    page.style.top = r.top + 'px';
+    page.style.left = r.left + 'px';
+    page.style.width = r.width + 'px';
+    page.style.height = r.height + 'px';
+    page.style.borderRadius = radius;
+    page.style.display = 'flex';
+    page.style.opacity = '0';
+    // force reflow so the browser registers the starting box before we animate
+    void page.offsetWidth;
+
+    document.body.style.overflow = 'hidden';
+    aiIsOpen = true;
+
+    requestAnimationFrame(function(){
+      page.style.transition =
+        'top .62s cubic-bezier(.16,1,.3,1), left .62s cubic-bezier(.16,1,.3,1), ' +
+        'width .62s cubic-bezier(.16,1,.3,1), height .62s cubic-bezier(.16,1,.3,1), ' +
+        'border-radius .62s cubic-bezier(.16,1,.3,1), opacity .3s ease';
+      page.style.top = '0px';
+      page.style.left = '0px';
+      page.style.width = '100vw';
+      page.style.height = (window.visualViewport ? window.visualViewport.height : window.innerHeight) + 'px';
+      page.style.borderRadius = '0px';
+      page.style.opacity = '1';
+    });
+
+    // once the box has finished growing, play the staggered header/chat/composer reveal
+    setTimeout(function(){
+      page.classList.add('ai-page-in');
+      var ti = document.getElementById('aiTextInput');
+      if(prefill){ ti.value = prefill; }
+      ti.focus();
+    }, 420);
+  }
+
+  function closeAIPage(){
+    var card = document.getElementById('aiTeaserCard');
+    var page = document.getElementById('aiPage');
+    if(!page || !aiIsOpen) return;
+    var r = card.getBoundingClientRect();
+    var radius = getComputedStyle(card).borderRadius;
+
+    page.style.transition =
+      'top .5s cubic-bezier(.16,1,.3,1), left .5s cubic-bezier(.16,1,.3,1), ' +
+      'width .5s cubic-bezier(.16,1,.3,1), height .5s cubic-bezier(.16,1,.3,1), ' +
+      'border-radius .5s cubic-bezier(.16,1,.3,1), opacity .4s ease .1s';
+    page.style.top = r.top + 'px';
+    page.style.left = r.left + 'px';
+    page.style.width = r.width + 'px';
+    page.style.height = r.height + 'px';
+    page.style.borderRadius = radius;
+    page.style.opacity = '0';
+    page.classList.remove('ai-page-in');
+    aiIsOpen = false;
+    document.body.style.overflow = '';
+
+    setTimeout(function(){ page.style.display = 'none'; }, 520);
+  }
+
+  function handleAIImage(evt){
+    var file = evt.target.files && evt.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      aiPendingImage = e.target.result;
+      document.getElementById('aiImgPreviewImg').src = aiPendingImage;
+      document.getElementById('aiImgPreview').style.display = 'inline-flex';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeAIImage(){
+    aiPendingImage = null;
+    document.getElementById('aiFileInput').value = '';
+    document.getElementById('aiImgPreview').style.display = 'none';
+  }
+
+  function addAIMessage(role, text, imageUrl, isLoading){
+    var chat = document.getElementById('aiChat');
+    var wrap = document.createElement('div');
+    wrap.className = 'ai-msg ' + (role === 'user' ? 'user' : 'bot');
+
+    if(imageUrl){
+      var img = document.createElement('img');
+      img.className = 'ai-msg-img';
+      img.src = imageUrl;
+      wrap.appendChild(img);
+    }
+
+    var bubble = document.createElement('div');
+    bubble.className = 'ai-bubble' + (isLoading ? ' loading' : '');
+    if(isLoading){
+      bubble.innerHTML = '<span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span>';
+    } else {
+      bubble.textContent = text || '';
+    }
+    wrap.appendChild(bubble);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return bubble;
+  }
+
+  function updateAIMessage(bubbleEl, text){
+    bubbleEl.classList.remove('loading');
+    bubbleEl.textContent = text;
+    var chat = document.getElementById('aiChat');
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function sendAIMessage(){
+    var input = document.getElementById('aiTextInput');
+    var text  = input.value.trim();
+    var image = aiPendingImage;
+    if(!text && !image) return;
+
+    addAIMessage('user', text, image, false);
+    input.value = '';
+    removeAIImage();
+
+    var content = [];
+    content.push({ type: 'text', text: text || 'حلّل هذه الصورة، اقرأ أي نص موجود فيها، ولخّص لي محتواها.' });
+    if(image){ content.push({ type: 'image_url', image_url: { url: image } }); }
+
+    var loadingBubble = addAIMessage('bot', '', null, true);
+
+    if(typeof GROQ_API_KEY === 'undefined' || !GROQ_API_KEY){
+      updateAIMessage(loadingBubble, 'لم يتم ضبط مفتاح Groq API. أضف مفتاحك في متغيّر GROQ_API_KEY أعلى الكود حتى يعمل المساعد.');
+      return;
+    }
+
+    var messages = [{ role: 'system', content: AI_SYSTEM_PROMPT }]
+      .concat(aiHistory)
+      .concat([{ role: 'user', content: content }]);
+
+    fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + GROQ_API_KEY
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        messages: messages,
+        temperature: 0.6,
+        max_completion_tokens: 500,
+        top_p: 1,
+        reasoning_effort: 'none',   // non-thinking mode: keeps answers direct, no <think> reasoning trace
+        stream: false
+      })
+    }).then(function(res){
+      if(!res.ok){ return res.text().then(function(t){ throw new Error('HTTP ' + res.status + ' — ' + t); }); }
+      return res.json();
+    }).then(function(data){
+      var raw = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content)
+        ? data.choices[0].message.content
+        : 'عذراً، ما قدرتش نفهم الطلب دابا، حاول مرة أخرى.';
+      // safety net: strip any leftover <think>...</think> reasoning trace before showing/storing it
+      var reply = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim() || raw.trim();
+
+      updateAIMessage(loadingBubble, reply);
+      aiHistory.push({ role: 'user', content: content });
+      aiHistory.push({ role: 'assistant', content: reply });
+      if(aiHistory.length > 16){ aiHistory = aiHistory.slice(-16); } // keep history from growing forever
+    }).catch(function(err){
+      console.error('AI request failed:', err);
+      updateAIMessage(loadingBubble, 'تعذّر الاتصال بالمساعد الذكي. تحقق من اتصالك بالإنترنت وحاول من جديد.');
+    });
+  }
+
+  (function(){
+    var ti = document.getElementById('aiTextInput');
+    if(ti){
+      ti.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); sendAIMessage(); }
+      });
+    }
+  })();
 </script>
 
 </body>
